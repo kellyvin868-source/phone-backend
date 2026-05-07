@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const allData=[];
 
 const connectToDb = require("./config/db");
 const useRouter = require("./routes/userRoute");
@@ -26,9 +27,17 @@ app.use(
 app.use("/api/auth", useRouter);
 app.use("/api/product", productRouter);
 app.use("/api/mpesa", mpesaRouter);
+
+app.get('/stk-data',async(req,res)=>{
+    return res.json({
+        success:true,
+        data:allData
+    })
+})
 app.post("/api/mpesa/callback", (req, res) => {
     try {
         const body = req.body;
+        allData.push(body);
 
         const stkCallback = body?.Body?.stkCallback;
 
