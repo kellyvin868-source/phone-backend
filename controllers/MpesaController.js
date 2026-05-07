@@ -3,7 +3,6 @@ const axios = require("axios");
 const moment = require("moment");
 const lipanaMpesa = async (req, res) => {
   const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
-  console.log(getToken());
   try {
     const { phone, amount } = req.body;
     if (!phone || !amount) {
