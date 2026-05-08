@@ -18,7 +18,13 @@ const addNewProduct=async(req,res)=>{
             })
         }
 
-        const result=await cloudinary.uploader.upload(req.file.path);
+       const result = await cloudinary.uploader.upload(
+            `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
+            {
+                folder: "kelly_uploads"
+            }
+        );
+
         const newProduct=new Product({
             name,
             desc,

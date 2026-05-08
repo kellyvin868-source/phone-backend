@@ -1,12 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const allData=[];
 
 const connectToDb = require("./config/db");
 const useRouter = require("./routes/userRoute");
-const mpesaRouter = require("./routes/mpesaRoute");
-const aiRouter=require('./routes/aiRoute');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -25,43 +22,7 @@ app.use(
 );
 
 app.use("/api/auth", useRouter);
-app.use("/api/mpesa", mpesaRouter);
-app.use('/api/ai',aiRouter);
 
-app.get('/stk-data',async(req,res)=>{
-    return res.json({
-        success:true,
-        data:allData
-    })
-})
-app.post("/api/mpesa/callback", (req, res) => {
-    try {
-        const body = req.body;
-        allData.push(body);
-
-        const stkCallback = body?.Body?.stkCallback;
-
-        const metadata = stkCallback?.CallbackMetadata?.Item || [];
-
-        const getValue = (name) =>
-            metadata.find((item) => item.Name === name)?.Value;
-
-        const data = {
-            amount: getValue("Amount"),
-            phone: getValue("PhoneNumber"),
-            receipt: getValue("MpesaReceiptNumber"),
-            status: stkCallback?.ResultCode === 0 ? "Success" : "Failed"
-        };
-
-        console.log("Callback received:", data);
-
-        return res.json({ ResultCode: 0, ResultDesc: "Accepted" });
-
-    } catch (error) {
-        console.log(error);
-        return res.json({ ResultCode: 0 });
-    }
-});
 
 app.listen(PORT, () => {
   console.log(`server is now running at http://localhost:${PORT}`);
