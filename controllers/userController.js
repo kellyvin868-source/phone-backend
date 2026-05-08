@@ -200,7 +200,7 @@ const loginAdmin=async(req,res)=>{
         })
     }
 
-    const token=jwt.sign({email},process.env.JWT_SECRET_KEY,{expiresIn:"7d"});
+    const token=jwt.sign({email:email},process.env.JWT_SECRET_KEY,{expiresIn:"7d"});
     return res.status(200).json({
         success:true,
         message:"Login successfully",

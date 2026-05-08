@@ -1,20 +1,28 @@
-const express=require('express');
-const productRouter=express.Router();
-const multer=require('multer');
-const { addNewProduct, getAllProducts, getSingleProduct, deleteProduct } = require('../controllers/productController');
-const storage=multer.memoryStorage();
-const upload=multer({
-    storage:storage,
-    limits:{
-        fileSize:10*1024*1024
-    }
-})
+const express = require("express");
+const productRouter = express.Router();
+const multer = require("multer");
+const {
+  addNewProduct,
+  getAllProducts,
+  getSingleProduct,
+  deleteProduct,
+} = require("../controllers/productController");
+const getAdminAccess = require("../middlewares/adMinMiddleware");
+const storage = multer.diskStorage({
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  },
+});
 
-productRouter.post('/add',upload.single("file"),addNewProduct);
-productRouter.get('/get',getAllProducts);
-productRouter.get('/get/:id',getSingleProduct)
-productRouter.delete('/delete/:id',deleteProduct)
+productRouter.post("/add", upload.single("file"),getAdminAccess, addNewProduct);
+productRouter.get("/get", getAllProducts);
+productRouter.get("/get/:id", getSingleProduct);
+productRouter.delete("/delete/:id",getAdminAccess, deleteProduct);
 
-
-
-module.exports=productRouter;
+module.exports = productRouter;

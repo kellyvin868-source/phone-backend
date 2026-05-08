@@ -1,5 +1,5 @@
 const Product=require('../models/productsModel');
-const {cloudinary} =require('../config/cloudinary');
+const cloudinary =require('../config/cloudinary');
 
 const addNewProduct=async(req,res)=>{
     try {
@@ -18,13 +18,8 @@ const addNewProduct=async(req,res)=>{
             })
         }
 
-       const result = await cloudinary.uploader.upload(
-            `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`,
-            {
-                folder: "kelly_uploads"
-            }
-        );
 
+        const result=await cloudinary.uploader.upload(req.file.path);
         const newProduct=new Product({
             name,
             desc,
@@ -34,7 +29,7 @@ const addNewProduct=async(req,res)=>{
             androidversion,
             sim,
             screen,
-            bestseller,
+            bestseller:bestseller?"true":"false",
             storage,
             image:result.secure_url,
             publicId:result.public_id
@@ -60,7 +55,7 @@ const addNewProduct=async(req,res)=>{
 
 const getAllProducts=async(req,res)=>{
     try {
-        const products=await Product.find({});
+        const products=await Product.find({}).sort({createdAt:-1});
         if(products.length<1){
             return res.status(404).json({
                 success:false,
