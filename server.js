@@ -5,8 +5,8 @@ const allData=[];
 
 const connectToDb = require("./config/db");
 const useRouter = require("./routes/userRoute");
-const productRouter = require("./routes/productRoute");
 const mpesaRouter = require("./routes/mpesaRoute");
+const aiRouter=require('./routes/aiRoute');
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -25,8 +25,8 @@ app.use(
 );
 
 app.use("/api/auth", useRouter);
-app.use("/api/product", productRouter);
 app.use("/api/mpesa", mpesaRouter);
+app.use('/api/ai',aiRouter);
 
 app.get('/stk-data',async(req,res)=>{
     return res.json({
