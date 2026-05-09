@@ -10,7 +10,7 @@ const {
 const getAdminAccess = require("../middlewares/adMinMiddleware");
 const storage = multer.diskStorage({
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    cb(null,file.originalname);
   },
 });
 const upload = multer({
@@ -20,7 +20,7 @@ const upload = multer({
   },
 });
 
-productRouter.post("/add", upload.single("file"),getAdminAccess, addNewProduct);
+productRouter.post("/add", upload.array("files",5),getAdminAccess, addNewProduct);
 productRouter.get("/get", getAllProducts);
 productRouter.get("/get/:id", getSingleProduct);
 productRouter.delete("/delete/:id",getAdminAccess, deleteProduct);

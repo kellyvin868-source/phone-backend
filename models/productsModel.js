@@ -42,12 +42,8 @@ const productShema=new mongoose.Schema({
         required:true
     },
     image:{
-        type:String,
-        default:''
-    },
-    publicId:{
-        type:String,
-        default:""
+        type:Array,
+        default:[]
     }
 
 },{timestamps:true});

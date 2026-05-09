@@ -2,8 +2,9 @@ const Product=require('../models/productsModel');
 const cloudinary =require('../config/cloudinary');
 
 const addNewProduct=async(req,res)=>{
+    const imageArray=[];
     try {
-        if(!req.file){
+        if(!req.files){
             return res.status(400).json({
                 success:false,
                 message:"Please upload a file!!"
@@ -18,8 +19,13 @@ const addNewProduct=async(req,res)=>{
             })
         }
 
+        for(let i=0;i<req.files.length;i++){
+             const result=await cloudinary.uploader.upload(req.files[i].path);
+             imageArray.push(result.secure_url)
+        }
 
-        const result=await cloudinary.uploader.upload(req.file.path);
+
+       
         const newProduct=new Product({
             name,
             desc,
@@ -31,8 +37,8 @@ const addNewProduct=async(req,res)=>{
             screen,
             bestseller:bestseller?"true":"false",
             storage,
-            image:result.secure_url,
-            publicId:result.public_id
+            image:imageArray
+           
          
         });
 
