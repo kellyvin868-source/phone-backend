@@ -11,7 +11,7 @@ const verifyUser=(req,res,next)=>{
     }
     try {
         const decoded=jwt.verify(token,process.env.JWT_SECRET_KEY);
-        req.user=decoded;
+        req.userId=decoded.userId;
         next();
         
     } catch (error) {
@@ -28,14 +28,5 @@ const verifyUser=(req,res,next)=>{
 
 }
 
-const isAdmin=(req,res,next)=>{
-    if(req.user.role!=='admin'){
-        return res.status(400).json({
-            success:false,
-            message:'Admin rights are reserved!'
-        })
-    }
-    next();
-}
 
-module.exports={verifyUser,isAdmin};
+module.exports=verifyUser;

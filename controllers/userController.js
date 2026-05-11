@@ -141,29 +141,19 @@ const resetPassword=async(req,res)=>{
 
 const getUserData=async(req,res)=>{
     try {
-        const details=req.user;
+        const userId=req.userId;
+        const user=await User.findById(userId);
         return res.status(200).json({
             success:true,
-            details
+            data:{
+                email:user.email,
+                name:user.name,
+                role:user.role
+                
+            }
 
         })
     
-        
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            success:false,
-            message:error.message
-        })
-        
-    }
-}
-const accessAdmin=async(req,res)=>{
-    try {
-        return res.status(200).json({
-            success:true,
-            message:"You can access this page as admin!"
-        })
         
     } catch (error) {
         console.error(error);
@@ -228,6 +218,5 @@ module.exports={
     loginUser,
     resetPassword,
     getUserData,
-    accessAdmin,
     loginAdmin
 }
