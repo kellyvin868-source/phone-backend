@@ -6,6 +6,8 @@ const connectToDb = require("./config/db");
 const useRouter = require("./routes/userRoute");
 const productRouter=require('./routes/productRoute');
 const bookingRouter=require('./routes/bookingRoute');
+const callBackRouter=require('./routes/callBackRoute');
+
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -45,6 +47,8 @@ app.use(
 app.use("/api/auth", useRouter);
 app.use("/api/product",productRouter);
 app.use('/api',bookingRouter);
+app.use('/api/mpesa/callback',callBackRouter);
+
 
 
 app.listen(PORT, () => {
