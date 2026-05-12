@@ -126,7 +126,10 @@ const initiateStkPush = async (amount, phone, id) => {
         Authorization:`Bearer ${token}`,
         "Content-Type":"application/json"
       }
+      
     });
+
+    console.log(response.data);
 
   
 };
