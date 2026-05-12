@@ -129,7 +129,7 @@ const initiateStkPush = async (amount, phone, id) => {
       
     });
 
-    console.log(response.data);
+    
 
   
 };
